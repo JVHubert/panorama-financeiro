@@ -10,6 +10,7 @@ on:
 
 permissions:
   contents: write
+  actions: read # o alerta descobre em que passo parou
   pages: write
   id-token: write
 
@@ -61,3 +62,12 @@ jobs:
       # O commit do robô não dispara o workflow do site, então publicamos aqui também.
       - id: publicacao
         uses: actions/deploy-pages@v4
+
+      # Falhou qualquer passo acima: avisa no Telegram onde parou e o que costuma ser.
+      - name: Avisar no Telegram que falhou
+        if: failure()
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node tools/alertar.mjs

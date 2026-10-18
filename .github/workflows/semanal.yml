@@ -9,6 +9,7 @@ on:
 
 permissions:
   contents: read
+  actions: read # o alerta descobre em que passo parou
 
 concurrency:
   # Mesmo grupo de quem salva no repositório privado: o relatório espera a vez do bot, e não
@@ -55,6 +56,7 @@ jobs:
       # Se o Banco Central estiver fora do ar, o relatório sai com os últimos indicadores salvos
       # (o JSON da última coleta que deu certo) em vez de não sair.
       - name: Atualizar os indicadores
+        id: coleta
         continue-on-error: true
         run: node tools/coletar.mjs
 
@@ -98,3 +100,20 @@ jobs:
           git commit -m "dados: relatório de $(date -u +%F)"
           git pull --rebase
           git push
+
+      # A coleta pode falhar sem derrubar o relatório (sai com os indicadores anteriores): avisa assim mesmo.
+      - name: Avisar que os indicadores ficaram velhos
+        if: steps.coleta.outcome == 'failure'
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: node tools/alertar.mjs --aviso "Atualizar os indicadores" "O relatório saiu com os indicadores da última coleta que deu certo."
+
+      # Falhou qualquer passo acima: avisa no Telegram onde parou e o que costuma ser.
+      - name: Avisar no Telegram que falhou
+        if: failure()
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node tools/alertar.mjs

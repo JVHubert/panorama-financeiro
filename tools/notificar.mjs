@@ -18,6 +18,34 @@ export async function enviar(texto, { titulo = 'Panorama Financeiro' } = {}) {
   return { canal: 'tela' };
 }
 
+// Alerta da automação: texto simples (sem <pre>) para o link ficar clicável no Telegram.
+// Nunca derruba quem chamou — um alerta que falha não pode virar um segundo problema.
+export async function enviarAlerta(texto, { titulo = 'Panorama Financeiro - alerta' } = {}) {
+  const token = process.env.TELEGRAM_TOKEN;
+  const chat = process.env.TELEGRAM_CHAT_ID;
+  try {
+    if (token && chat) {
+      const resposta = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ chat_id: chat, text: texto, disable_web_page_preview: true }),
+      });
+      const devolvido = await resposta.json().catch(() => ({}));
+      if (!resposta.ok || devolvido.ok === false) {
+        throw new Error(`Telegram recusou (${resposta.status}): ${devolvido.description ?? 'sem detalhe'}`);
+      }
+      return { canal: 'telegram' };
+    }
+    const topico = process.env.NTFY_TOPIC;
+    if (topico) return await enviarNtfy(texto, { titulo, topico });
+    console.log(texto);
+    return { canal: 'tela' };
+  } catch (erro) {
+    console.log(`::warning::o alerta não foi entregue (${erro.message})`);
+    return { canal: 'erro', erro: erro.message };
+  }
+}
+
 // O relatório é uma tabela de texto: dentro de <pre> o Telegram usa fonte monoespaçada
 // e as colunas ficam alinhadas. (Telegram não aceita cor em texto — a cor é o emoji.)
 function escaparHtml(texto) {

@@ -40,6 +40,15 @@ test('quem salva no repositório privado usa o mesmo grupo de espera, sem cancel
   assert.ok(alguemSalva, 'nenhum workflow salva no repositório privado');
 });
 
+test('todo workflow avisa no Telegram quando falha', async () => {
+  for (const { nome, texto } of await lerWorkflows()) {
+    assert.match(texto, /if:\s*failure\(\)/, `${nome}: falha em silêncio (falta o passo com if: failure())`);
+    assert.match(texto, /node tools\/alertar\.mjs/, `${nome}: o passo de falha não chama tools/alertar.mjs`);
+    assert.match(texto, /actions:\s*read/, `${nome}: sem actions: read o alerta não descobre onde parou`);
+    assert.match(texto, /TELEGRAM_CHAT_ID/, `${nome}: o alerta não recebe o chat do Telegram`);
+  }
+});
+
 test('o token dos dados privados não fica exposto aos scripts do npm ci', async () => {
   for (const { nome, texto } of await lerWorkflows()) {
     // Qualquer repo do dono: o nome do repositório de dados muda e o teste não pode virar letra morta.

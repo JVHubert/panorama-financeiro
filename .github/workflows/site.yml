@@ -9,6 +9,7 @@ on:
 
 permissions:
   contents: read
+  actions: read # o alerta descobre em que passo parou
   pages: write
   id-token: write
 
@@ -24,8 +25,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: npm test
-      - run: node tools/publicar.mjs
+      - name: Conferir as contas
+        run: npm test
+      - name: Montar o site
+        run: node tools/publicar.mjs
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist/site
@@ -39,3 +42,20 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+
+  # Falhou a montagem ou a publicação: avisa no Telegram onde parou.
+  alerta:
+    needs: [build, deploy]
+    if: failure()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Avisar no Telegram que falhou
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node tools/alertar.mjs

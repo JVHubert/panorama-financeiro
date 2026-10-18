@@ -9,6 +9,7 @@ on:
 
 permissions:
   contents: read
+  actions: read # o vigia e o alerta leem as execuções dos workflows
 
 # Mesmo grupo dos outros que salvam no repositório privado: um push de cada vez.
 concurrency:
@@ -41,6 +42,18 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: node tools/telegram.mjs
 
+      # O vigia confere se o relatório de domingo e a coleta diária rodaram de fato, e avisa uma vez
+      # só por problema (o que já foi avisado fica em alertas.json, nos dados privados).
+      - name: Vigiar os outros workflows
+        if: hashFiles('privado/carteira.json') != ''
+        continue-on-error: true
+        env:
+          DADOS_DIR: privado/
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node tools/vigia.mjs
+
       - name: Guardar no repositório privado
         if: hashFiles('privado/carteira.json') != ''
         run: |
@@ -56,3 +69,12 @@ jobs:
           git commit -m "dados: anotado pelo Telegram"
           git pull --rebase
           git push
+
+      # Falhou qualquer passo acima: avisa no Telegram onde parou e o que costuma ser.
+      - name: Avisar no Telegram que falhou
+        if: failure()
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node tools/alertar.mjs
