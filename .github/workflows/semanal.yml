@@ -52,7 +52,10 @@ jobs:
             echo "sem os dados privados nesta execução: sigo com o secret CARTEIRA_JSON"
           fi
 
+      # Se o Banco Central estiver fora do ar, o relatório sai com os últimos indicadores salvos
+      # (o JSON da última coleta que deu certo) em vez de não sair.
       - name: Atualizar os indicadores
+        continue-on-error: true
         run: node tools/coletar.mjs
 
       - name: Conferir as contas
