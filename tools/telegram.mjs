@@ -74,9 +74,13 @@ async function executar(comando) {
 const offset = await lerOffset();
 // Antes de anotar: o que já existe no repositório privado entra aqui (senão a resposta duplicaria).
 await baixar();
-const resposta = await fetch(
-  `https://api.telegram.org/bot${TOKEN}/getUpdates?offset=${offset}&timeout=0`,
-);
+// Desde o JV11 News, o bot é compartilhado: um Worker na Cloudflare recebe todas as mensagens e guarda
+// as do Panorama (/r, /d, /premio, /ajuda) numa fila com o mesmo formato do getUpdates.
+// Sem TELEGRAM_FILA_URL, lê direto do Telegram como antes.
+const FILA = process.env.TELEGRAM_FILA_URL;
+const resposta = FILA
+  ? await fetch(`${FILA}?offset=${offset}`, { headers: { 'x-segredo': process.env.TELEGRAM_FILA_SEGREDO ?? '' } })
+  : await fetch(`https://api.telegram.org/bot${TOKEN}/getUpdates?offset=${offset}&timeout=0`);
 const corpo = await resposta.json().catch(() => ({}));
 if (!resposta.ok || corpo.ok === false) {
   console.log(`::warning::o Telegram recusou a leitura (${resposta.status}): ${corpo.description ?? 'sem detalhe'}`);

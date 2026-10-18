@@ -40,6 +40,9 @@ jobs:
           DADOS_DIR: privado/
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          # O bot é compartilhado com o JV11 News: as mensagens do Panorama chegam por esta fila.
+          TELEGRAM_FILA_URL: ${{ secrets.TELEGRAM_FILA_URL }}
+          TELEGRAM_FILA_SEGREDO: ${{ secrets.TELEGRAM_FILA_SEGREDO }}
         run: node tools/telegram.mjs
 
       # O vigia confere se o relatório de domingo e a coleta diária rodaram de fato, e avisa uma vez
