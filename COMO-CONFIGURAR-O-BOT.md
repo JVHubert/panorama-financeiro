@@ -31,7 +31,7 @@ Sem isso, o envio falha com `400 Bad Request: chat not found`. Não é problema 
 No PowerShell:
 
 ```powershell
-cd "C:\AI\2026.10.11 Panorama Financeiro\01 Projeto\panorama-financeiro"
+cd "C:\AI\2026.10.11 JV11\01 Projeto\panorama-financeiro"
 npm.cmd run chat-id
 ```
 
@@ -52,7 +52,7 @@ Se aparecer "Nenhuma mensagem encontrada": você ainda não mandou o `oi` (Parte
 
 ## Parte 4 — Salve na sua máquina
 
-Abra `C:\AI\2026.10.11 Panorama Financeiro\01 Projeto\panorama-financeiro\.env.local` no VS Code. O token já está lá; falta o id:
+Abra `C:\AI\2026.10.11 JV11\01 Projeto\panorama-financeiro\.env.local` no VS Code. O token já está lá; falta o id:
 
 ```
 TELEGRAM_TOKEN=123456789:AAF...
@@ -76,7 +76,7 @@ Se aparecer `relatório enviado por tela`, o `TELEGRAM_CHAT_ID` está vazio ou o
 Você já está logado no `gh` (conta **JVHubert**), então são 4 comandos.
 
 ```powershell
-cd "C:\AI\2026.10.11 Panorama Financeiro\01 Projeto\panorama-financeiro"
+cd "C:\AI\2026.10.11 JV11\01 Projeto\panorama-financeiro"
 git init -b main
 git add -A
 git commit -m "panorama financeiro: site, coleta diária e relatório semanal"
