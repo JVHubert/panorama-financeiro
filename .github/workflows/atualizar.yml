@@ -8,6 +8,12 @@ on:
     - cron: '10 21 * * *' # 18:10 em Brasília
   workflow_dispatch:
 
+# Desde 19/10/2026 o JV11 News orquestra as mensagens: os alertas deste workflow ficam guardados na
+# Cloudflare e aparecem na mensagem do dia, em vez de chegarem sozinhos no Telegram.
+env:
+  ALERTAS_URL: ${{ secrets.ALERTAS_URL }}
+  ALERTAS_SEGREDO: ${{ secrets.ALERTAS_SEGREDO }}
+
 permissions:
   contents: write
   actions: read # o alerta descobre em que passo parou

@@ -185,8 +185,11 @@ if (!SECO) {
   if (comemoracoes.length) {
     await mkdir(new URL('./', MURAL), { recursive: true });
     await writeFile(MURAL, mural, 'utf8');
-    for (const comemoracao of comemoracoes) {
-      await enviarSemDerrubar(mensagemDoMarco(comemoracao), { titulo: 'Panorama Financeiro - marco batido' });
+    // Com o JV11 orquestrando, a comemoração vai junto do relatório para a edição de domingo.
+    if (!process.env.PANORAMA_DESTINO_URL) {
+      for (const comemoracao of comemoracoes) {
+        await enviarSemDerrubar(mensagemDoMarco(comemoracao), { titulo: 'Panorama Financeiro - marco batido' });
+      }
     }
   }
   await mkdir(new URL('./', HISTORICO), { recursive: true });
@@ -218,18 +221,41 @@ await mkdir(PASTA, { recursive: true });
 await writeFile(new URL(`${HOJE}.md`, PASTA), `${texto}\n`, 'utf8');
 console.log(`relatório salvo em relatorios/${HOJE}.md`);
 
-// A imagem (com cor de verdade) é o canal principal; o texto é a reserva.
+// Desde 19/10/2026 o relatório vai em HTML para o JV11, que o coloca dentro da edição de domingo
+// (uma página só, uma mensagem só). Sem PANORAMA_DESTINO_URL, segue o caminho antigo (imagem no Telegram).
+const DESTINO = process.env.PANORAMA_DESTINO_URL;
 let enviado = null;
-try {
-  const png = await renderizar(montarHtml(dados));
-  await writeFile(new URL(`${HOJE}.png`, PASTA), png);
-  console.log(`imagem salva em relatorios/${HOJE}.png (${Math.round(png.length / 1024)} KB)`);
-  if (!SECO) {
-    enviado = await enviarFoto(png, { legenda: `📊 Relatório semanal — ${formatarData(HOJE)}` });
-    if (enviado) console.log(`imagem enviada por ${enviado.canal}`);
+if (DESTINO && !SECO) {
+  try {
+    const resposta = await fetch(DESTINO, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', 'x-segredo': process.env.ALERTAS_SEGREDO ?? '' },
+      body: JSON.stringify({
+        data: HOJE,
+        html: montarHtml(dados),
+        texto,
+        comemoracoes: comemoracoes.map((c) => mensagemDoMarco(c)),
+      }),
+    });
+    if (!resposta.ok) throw new Error(`o JV11 recusou (${resposta.status})`);
+    enviado = { canal: 'jv11' };
+    console.log('relatório entregue ao JV11 (entra na edição de domingo)');
+  } catch (erro) {
+    console.log(`::warning::não consegui entregar ao JV11 (${erro.message}) — vou mandar pelo Telegram`);
   }
-} catch (erro) {
-  console.log(`::warning::a imagem não saiu (${erro.message})${SECO ? '' : ' — vou mandar em texto'}`);
+}
+if (!enviado) {
+  try {
+    const png = await renderizar(montarHtml(dados));
+    await writeFile(new URL(`${HOJE}.png`, PASTA), png);
+    console.log(`imagem salva em relatorios/${HOJE}.png (${Math.round(png.length / 1024)} KB)`);
+    if (!SECO) {
+      enviado = await enviarFoto(png, { legenda: `📊 Relatório semanal — ${formatarData(HOJE)}` });
+      if (enviado) console.log(`imagem enviada por ${enviado.canal}`);
+    }
+  } catch (erro) {
+    console.log(`::warning::a imagem não saiu (${erro.message})${SECO ? '' : ' — vou mandar em texto'}`);
+  }
 }
 
 if (SECO) {

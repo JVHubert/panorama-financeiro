@@ -24,6 +24,17 @@ export async function enviarAlerta(texto, { titulo = 'Panorama Financeiro - aler
   const token = process.env.TELEGRAM_TOKEN;
   const chat = process.env.TELEGRAM_CHAT_ID;
   try {
+    // Desde 19/10/2026 o JV11 orquestra as mensagens: o alerta fica guardado na Cloudflare e aparece
+    // na mensagem do dia ("saúde dos dois"), em vez de chegar sozinho no Telegram.
+    if (process.env.ALERTAS_URL && process.env.ALERTAS_SEGREDO) {
+      const resposta = await fetch(process.env.ALERTAS_URL, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', 'x-segredo': process.env.ALERTAS_SEGREDO },
+        body: JSON.stringify({ origem: 'Panorama', texto }),
+      });
+      if (!resposta.ok) throw new Error(`o JV11 recusou o alerta (${resposta.status})`);
+      return { canal: 'jv11' };
+    }
     if (token && chat) {
       const resposta = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
         method: 'POST',
