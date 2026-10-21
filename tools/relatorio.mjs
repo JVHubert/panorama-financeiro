@@ -7,6 +7,7 @@ import { alocacao, montarRelatorio, numeroDaSemana, resumoPosicao } from '../rel
 import { cdiParaComparar, medirItem } from '../reserva.js';
 import { opcoesDaTrilha } from '../trilha.js';
 import { montarHtml } from '../relatorioHtml.js';
+import { montarPagina } from '../relatorioPagina.js';
 import { acharBlocoDaSemana, lerEntradas, historicoDeEstudo, placar, situacao } from '../caderno.js';
 import {
   historicoAtualizado,
@@ -232,7 +233,7 @@ if (DESTINO && !SECO) {
       headers: { 'content-type': 'application/json', 'x-segredo': process.env.ALERTAS_SEGREDO ?? '' },
       body: JSON.stringify({
         data: HOJE,
-        html: montarHtml(dados),
+        html: montarPagina(dados), // versão para celular; a montarHtml fica para a imagem de reserva
         texto,
         comemoracoes: comemoracoes.map((c) => mensagemDoMarco(c)),
       }),
