@@ -1,5 +1,5 @@
 {
-  "atualizadoEm": "2026-10-31T17:14:04.085Z",
+  "atualizadoEm": "2026-11-01T00:02:48.556Z",
   "indicadores": [
     {
       "id": "meta-selic",
@@ -15,7 +15,7 @@
       "extra": null,
       "serie": [
         {
-          "data": "2025-04-01",
+          "data": "2025-05-01",
           "valor": 14.25
         },
         {
@@ -373,10 +373,6 @@
       "rotuloVariacao": "",
       "extra": null,
       "serie": [
-        {
-          "data": "2026-03-01",
-          "valor": 10.223254346725486
-        },
         {
           "data": "2026-04-01",
           "valor": 9.997669594895854
