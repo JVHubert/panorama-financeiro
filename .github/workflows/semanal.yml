@@ -2,8 +2,9 @@
 # Envia por Telegram (TELEGRAM_TOKEN + TELEGRAM_CHAT_ID) ou ntfy (NTFY_TOPIC) — ver README.
 name: Relatório semanal
 
-# Sem horário próprio desde 19/10/2026: a Cloudflare (Worker do JV11 News) dá o play no domingo às 6h45 de
-# Brasília, e o relatório entra na edição de domingo do JV11, em HTML, numa mensagem só.
+# Sem horário próprio desde 19/10/2026: a Cloudflare (Worker do JV11 News) dá o play. Desde 07/11/2026 é no
+# domingo às 20h de Brasília, e o relatório chega sozinho no Telegram, numa mensagem própria com o botão para a
+# página (antes ia dentro do boletim de domingo de manhã).
 on:
   workflow_dispatch:
 
