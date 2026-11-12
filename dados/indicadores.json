@@ -1,5 +1,5 @@
 {
-  "atualizadoEm": "2026-11-12T02:12:32.655Z",
+  "atualizadoEm": "2026-11-12T19:51:12.912Z",
   "indicadores": [
     {
       "id": "meta-selic",
@@ -55,19 +55,15 @@
       "unidade": "% ao ano",
       "prefixoValor": "",
       "valor": 13.649989315282562,
-      "referencia": "2026-11-10",
+      "referencia": "2026-11-11",
       "fonte": "BACEN · SGS 12",
       "variacao": null,
       "rotuloVariacao": "",
       "extra": {
         "rotulo": "acumulado em 12 meses",
-        "percentual": 0.14276973826845984
+        "percentual": 0.1427201351254348
       },
       "serie": [
-        {
-          "data": "2026-09-04",
-          "valor": 0.05166
-        },
         {
           "data": "2026-09-08",
           "valor": 0.05166
@@ -243,6 +239,10 @@
         {
           "data": "2026-11-10",
           "valor": 0.050788
+        },
+        {
+          "data": "2026-11-11",
+          "valor": 0.050788
         }
       ],
       "sobre": "Taxa que os bancos cobram entre si. É o que rende a maior parte dos CDBs e a poupança do seu banco, quase sempre colada na Selic."
@@ -252,20 +252,16 @@
       "nome": "IPCA em 12 meses",
       "unidade": "% acumulado",
       "prefixoValor": "",
-      "valor": 4.576119675071877,
-      "referencia": "2026-09-01",
+      "valor": 4.628360717970881,
+      "referencia": "2026-10-01",
       "fonte": "BACEN · SGS 433",
       "variacao": null,
       "rotuloVariacao": "",
       "extra": {
         "rotulo": "no último mês",
-        "percentual": 0.008199999999999999
+        "percentual": 0.0014000000000000002
       },
       "serie": [
-        {
-          "data": "2024-10-01",
-          "valor": 0.56
-        },
         {
           "data": "2024-11-01",
           "valor": 0.39
@@ -357,6 +353,10 @@
         {
           "data": "2026-09-01",
           "valor": 0.82
+        },
+        {
+          "data": "2026-10-01",
+          "valor": 0.14
         }
       ],
       "sobre": "Inflação oficial do país. É o número que corrói o seu rendimento: ganhar menos que isso é perder poder de compra."
@@ -366,8 +366,8 @@
       "nome": "Juro real",
       "unidade": "% nos últimos 12 meses",
       "prefixoValor": "",
-      "valor": 9.276356955981546,
-      "referencia": "2026-09-01",
+      "valor": 9.217054275147607,
+      "referencia": "2026-10-01",
       "fonte": "cálculo do painel",
       "variacao": null,
       "rotuloVariacao": "",
@@ -396,6 +396,10 @@
         {
           "data": "2026-09-01",
           "valor": 9.464818553819532
+        },
+        {
+          "data": "2026-10-01",
+          "valor": 9.190047254198097
         }
       ],
       "sobre": "O CDI dos últimos 12 meses comparado com o IPCA do mesmo período. É esse número que importa para quem poupa."
@@ -405,17 +409,13 @@
       "nome": "Dólar",
       "unidade": "",
       "prefixoValor": "R$ ",
-      "valor": 5.5606,
-      "referencia": "2026-11-10",
+      "valor": 5.6143,
+      "referencia": "2026-11-11",
       "fonte": "BACEN · SGS 1",
-      "variacao": -0.0041905444126073554,
+      "variacao": 0.009657231234039498,
       "rotuloVariacao": "no dia",
       "extra": null,
       "serie": [
-        {
-          "data": "2026-09-08",
-          "valor": 5.0856
-        },
         {
           "data": "2026-09-09",
           "valor": 5.0979
@@ -591,6 +591,10 @@
         {
           "data": "2026-11-11",
           "valor": 5.5606
+        },
+        {
+          "data": "2026-11-12",
+          "valor": 5.6143
         }
       ],
       "sobre": "Preço do dólar. Serve de termômetro de risco e é a base do custo de qualquer investimento lá fora."
