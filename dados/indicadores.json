@@ -1,5 +1,5 @@
 {
-  "atualizadoEm": "2026-11-26T03:29:11.437Z",
+  "atualizadoEm": "2026-11-26T21:25:40.162Z",
   "indicadores": [
     {
       "id": "meta-selic",
@@ -55,19 +55,15 @@
       "unidade": "% ao ano",
       "prefixoValor": "",
       "valor": 13.649989315282562,
-      "referencia": "2026-11-24",
+      "referencia": "2026-11-25",
       "fonte": "BACEN · SGS 12",
       "variacao": null,
       "rotuloVariacao": "",
       "extra": {
         "rotulo": "acumulado em 12 meses",
-        "percentual": 0.1423233874841825
+        "percentual": 0.1422738037154896
       },
       "serie": [
-        {
-          "data": "2026-09-18",
-          "valor": 0.050788
-        },
         {
           "data": "2026-09-21",
           "valor": 0.050788
@@ -243,6 +239,10 @@
         {
           "data": "2026-11-24",
           "valor": 0.050788
+        },
+        {
+          "data": "2026-11-25",
+          "valor": 0.050788
         }
       ],
       "sobre": "Taxa que os bancos cobram entre si. É o que rende a maior parte dos CDBs e a poupança do seu banco, quase sempre colada na Selic."
@@ -366,7 +366,7 @@
       "nome": "Juro real",
       "unidade": "% nos últimos 12 meses",
       "prefixoValor": "",
-      "valor": 9.179134571681956,
+      "valor": 9.174395534545887,
       "referencia": "2026-10-01",
       "fonte": "cálculo do painel",
       "variacao": null,
@@ -409,17 +409,13 @@
       "nome": "Dólar",
       "unidade": "",
       "prefixoValor": "R$ ",
-      "valor": 5.8825,
-      "referencia": "2026-11-24",
+      "valor": 5.7446,
+      "referencia": "2026-11-25",
       "fonte": "BACEN · SGS 1",
-      "variacao": 0.004302323596196089,
+      "variacao": -0.02344241393965152,
       "rotuloVariacao": "no dia",
       "extra": null,
       "serie": [
-        {
-          "data": "2026-09-21",
-          "valor": 5.1117
-        },
         {
           "data": "2026-09-22",
           "valor": 5.1161
@@ -595,6 +591,10 @@
         {
           "data": "2026-11-25",
           "valor": 5.8825
+        },
+        {
+          "data": "2026-11-26",
+          "valor": 5.7446
         }
       ],
       "sobre": "Preço do dólar. Serve de termômetro de risco e é a base do custo de qualquer investimento lá fora."
